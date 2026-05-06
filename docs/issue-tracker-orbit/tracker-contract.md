@@ -1,0 +1,109 @@
+# Tracker Contract
+
+This file is generated or completed during bootstrap. It is the contract-consumer-readable source of truth for the repository's selected issue tracker backend and runtime rule mappings.
+
+If `status` is `pending-bootstrap`, do not use this repository for managed issue workflow yet. Complete `BOOTSTRAP.md` first.
+
+```yaml
+version: 1
+status: pending-bootstrap
+backend: null
+
+repository:
+  id: null
+  default_branch: main
+
+issue:
+  id_format: null
+  state:
+    required: true
+    cardinality: exactly_one
+    representation: null
+    values: {}
+  type:
+    required: true
+    cardinality: exactly_one
+    representation: null
+    values: {}
+  metadata:
+    priority:
+      required: false
+      representation: null
+      values: []
+    size:
+      required: false
+      representation: null
+      values: []
+    blocked:
+      required: false
+      representation: null
+      blocks_advancement: true
+      values: []
+    resolution:
+      required: false
+      representation: null
+      values: []
+
+sections:
+  triage-notes:
+    storage: null
+    heading: "## Triage Notes"
+  dev-brief:
+    storage: null
+    heading: "## Dev Brief"
+  dev-workpad:
+    storage: null
+    heading: "## Dev Workpad"
+  review-sweep:
+    storage: null
+    heading: "## Review Sweep"
+  human-review-decision:
+    storage: null
+    heading: "## Human Review Decision"
+  debt-notes:
+    storage: null
+    heading: "## Debt Notes"
+
+review_artifact:
+  required: true
+
+backend_mapping: {}
+
+validation:
+  commands: []
+  required_before_review: true
+  required_before_land: true
+
+merge:
+  method: squash
+  delete_branch: true
+
+safety:
+  dry_run_required_for:
+    - batch_issue_edits
+    - batch_metadata_changes
+    - template_install_or_overwrite
+    - branch_push
+    - review_artifact_create
+    - merge_or_land
+  hard_stops:
+    - issue_has_no_state
+    - issue_has_multiple_states
+    - dev_brief_type_missing_or_mismatched
+    - required_section_missing
+    - active_blocked_metadata
+    - validation_failed_without_waiver
+    - review_artifact_missing
+    - review_output_without_human_decision
+    - runtime_ownership_modeled_as_issue_fact
+```
+
+## Notes
+
+- `backend` is the only backend selector. Do not add a second selector for PR/MR/local review type.
+- Do not add `consumers`, `permissions`, or runtime actor role fields. Consumer action authority is defined by the consumer's own orbit, tool, or human process.
+- `issue.type` is the source of truth for issue type; the Dev Brief Type line is only a human-readable mirror and uses the canonical type value.
+- `sections` maps canonical issue section storage and headings. Required and optional section semantics are defined by the backend-neutral core.
+- `review_artifact.required` is a core gate. Its concrete form is defined by the selected backend mapping.
+- Concrete commands, API clients, and execution procedures belong to contract consumers, tools, or human process.
+- Contract consumers must read the YAML block before reading explanatory docs.

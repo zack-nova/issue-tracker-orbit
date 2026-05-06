@@ -1,0 +1,299 @@
+package:
+    type: orbit
+    name: issue-tracker-orbit
+description: issue-tracker-orbit orbit
+meta:
+    file: .harness/orbits/issue-tracker-orbit.yaml
+    agents_template: |
+        # AGENTS.md - Issue Tracker Contract Orbit
+
+        本仓库使用 Issue Tracker Contract Orbit 管理 issue-driven delivery。
+
+        ## 不可违反规则
+
+        - 先读 `docs/issue-tracker-orbit/tracker-contract.md`。如果它仍是 `pending-bootstrap`，先执行 `BOOTSTRAP.md`。
+        - 不要假设 issue 存在 GitHub。必须使用 tracker contract 里选择的 backend mapping。
+        - 每个 open issue 必须且只能有一个 canonical state role。
+        - Issue 进入 `ready-for-dev` 前，必须有 exactly one issue type 和完整 `Dev Brief`。
+        - Issue 进入 `in-progress` 前，必须已经处于 canonical state role `ready-for-dev`。
+        - `Dev Workpad` 是 issue-scoped execution record，不是外部运行 session。
+        - `Review Sweep` 只记录 **Review Sweep Producer** 的观察，不决定 `rework` 或 `merge`。
+        - `to-rework` 和 `to-merge` 必须由 `Human Review Decision` 决定。
+        - `to-rework` 完成后回到 `in-review`；`to-merge` 只有 Land 成功后才能进入 `merged`。
+        - 不得在默认分支直接开发，不得本地直接 merge 默认分支。
+        - 发生规则冲突、模板冲突、状态冲突或事实源不一致时，停止推进并请求人类维护者决策。
+
+        ## 文档入口
+
+        - Runtime contract：`docs/issue-tracker-orbit/tracker-contract.md`
+        - 文档索引：`docs/issue-tracker-orbit/INDEX.md`
+
+        处理状态、metadata、issue sections、review artifact、模板或安全规则时，先读取 tracker contract，再按需读取 core 或 adapter 文档。
+    humans_template: |
+        # HUMANS.md - Issue Tracker Contract Orbit
+
+        这份说明给项目维护者日常使用。它不是安装清单，也不是 orbit 内部维护手册。
+
+        ## 你需要知道什么
+
+        - 当前仓库的 issue workflow 规则在 `docs/issue-tracker-orbit/tracker-contract.md`。
+        - Issue 可以存在 GitHub、GitLab、本地 markdown 或其他 tracker 中，具体以后端契约为准。
+        - **Contract Consumer** 是必须先读取并遵守 tracker contract 的运行参与者身份。任何要参与 issue workflow 的运行参与者都必须先作为 **Contract Consumer**。
+        - **Contract Consumer** 身份本身不授予 triage、开发、创建 review artifact、rework、land 或 merge 权限；具体权限由外部 orbit、运行时参与者、工具或人类流程决定。
+        - 人类维护者负责澄清需求、批准 waiver、处理冲突，以及写出最终 review decision。
+
+        ## 什么时候需要你参与
+
+        ### Triage
+
+        当 issue 信息不足时，具备 triage 职责的 **Contract Consumer** 会让 issue 保持在 `needs-info`，并记录 Triage Notes。你需要补充缺失事实或决定取消、拆分、降级。
+
+        ### Ready for Dev
+
+        Issue 进入 `ready-for-dev` 前必须有完整 Dev Brief。你需要确认：
+
+        - 需求表达清楚，
+        - acceptance criteria 可验证，
+        - validation plan 真实可执行，
+        - out-of-scope 明确，
+        - 没有 active blocked metadata。
+
+        ### Blocked
+
+        Blocked 不是状态。它表示当前 issue 被依赖、外部因素或人类决策阻塞。解除阻塞后，移除 blocked metadata；不要把 issue 当成新状态重开。
+
+        ### Debt Notes
+
+        当开发或 review 中发现不阻塞当前交付的技术债，可以按需创建 `## Debt Notes`。它不是隐藏 backlog，也不是 merge blocker。若债务后来被提升为独立 issue，更新原条目的 `Follow-up issue`；若债务会影响当前交付，必须进入 review evidence，并由 Human Review Decision 决定。
+
+        ### Review
+
+        Issue 进入 `in-review` 后，review artifact 已存在。它通常是 PR/MR；local markdown backend 会使用本地 review artifact 文件模拟 review gate。Review Sweep 写入后，issue 进入 `human-review`，等待人类维护者写 Human Review Decision。
+
+        Review Sweep 只是观察，不是决定。
+
+        ### Human Review Decision
+
+        当 review 信息足够后，人类维护者需要写 Human Review Decision：
+
+        ```text
+        Decision: hold
+        Decision: rework
+        Decision: merge
+        ```
+
+        - `hold`：继续留在 `human-review`。
+        - `rework`：允许 issue 进入 `to-rework`，由具备 rework 职责的 **Contract Consumer** 接管。
+        - `merge`：允许 issue 进入 `to-merge`，由具备 land 职责的 **Contract Consumer** 执行 Land；Land 成功后 issue 进入 `merged`。
+
+        不要让 review output 替代 Human Review Decision。
+
+        `Human Review Decision` 是授权证据，不是操作触发器；操作触发看 issue 的 canonical state role。Contract Consumer 需要用自己的 claim/running/retry 机制避免重复接管，tracker contract 不记录这些运行时占用事实。
+
+        `to-rework` 完成后必须回到 `in-review`，重新产生 Review Sweep。`to-merge` 执行失败时回到 `human-review`，只有人类确认需要改代码时才进入 `to-rework`。
+
+        ## 不要手动绕过
+
+        - 不要直接在默认分支开发。
+        - 不要本地 merge 默认分支。
+        - 不要绕过 tracker contract 修改状态。
+        - 不要把外部运行 session 或 worktree notes 当成事实源。
+        - 不要在没有 Human Review Decision 的情况下要求任何运行环境 merge。
+    bootstrap_template: |
+        # BOOTSTRAP.md - Issue Tracker Contract Orbit
+
+        本 orbit 已安装在当前代码仓库中。Bootstrap 的目标是选择 issue tracker backend，并生成可运行的 `tracker-contract.md`。
+
+        Bootstrap 不创建开发 worktree，不实现代码，不创建业务 review artifact，不 merge。
+
+        ## 1. 确认仓库上下文
+
+        - 确认当前目录是目标代码仓库根目录。
+        - 执行 `git remote -v`，判断是否明显对应 GitHub 或 GitLab。
+        - 执行 `git branch --show-current` 与 `git status --short`，确认当前分支和工作区状态。
+        - 读取 `docs/issue-tracker-orbit/INDEX.md`。
+        - 读取 `docs/issue-tracker-orbit/tracker-contract.md`。
+
+        ## 2. 选择 tracker backend
+
+        选择一个 backend：
+
+        ```text
+        github
+        gitlab
+        local-markdown
+        other
+        ```
+
+        默认建议：
+
+        - remote 指向 GitHub 时选择 `github`。
+        - remote 指向 GitLab 时选择 `gitlab`。
+        - 无远端或项目明确要求本地管理时选择 `local-markdown`。
+        - Jira、Linear 或自定义系统选择 `other`，并要求人类提供事实表示、review artifact 和安全规则。
+
+        读取对应 adapter：
+
+        ```text
+        docs/issue-tracker-orbit/adapters/github.md
+        docs/issue-tracker-orbit/adapters/gitlab.md
+        docs/issue-tracker-orbit/adapters/local-markdown.md
+        docs/issue-tracker-orbit/adapters/other.md
+        ```
+
+        ## 3. 生成 tracker contract
+
+        编辑：
+
+        ```text
+        docs/issue-tracker-orbit/tracker-contract.md
+        ```
+
+        必须完成：
+
+        - 将 `status` 改为 `active`。
+        - 填写 `backend`。
+        - 填写 repository id 与 default branch。
+        - 填写 state、type、metadata 的 backend 表示。
+        - 填写 canonical issue sections 的 storage 和 heading。
+        - 保留 `review_artifact.required: true`。
+        - 在 `backend_mapping` 中写入所选 backend 的 issue id/path/URL、review artifact、section storage、template target 等规则映射。
+        - 配置 validation commands。
+        - 配置 land/merge policy，除非所选 backend 没有对应 policy。
+
+        若项目暂时没有自动验证命令，必须写明 waiver，并将 `required_before_review` / `required_before_land` 设为符合现实的值。
+
+        ## 4. 安装或合并 backend 模板
+
+        模板来源：
+
+        ```text
+        docs/issue-tracker-orbit/templates/backends/<backend>/
+        ```
+
+        GitHub backend 常见目标：
+
+        ```text
+        .github/ISSUE_TEMPLATE/
+        .github/pull_request_template.md
+        ```
+
+        Local markdown backend 常见目标：
+
+        ```text
+        .scratch/issues/
+        .scratch/reviews/
+        ```
+
+        执行规则：
+
+        - 如果目标文件不存在，可以创建。
+        - 如果目标文件已存在，必须先展示 diff 和合并计划。
+        - 不得静默覆盖已有 tracker 模板、CODEOWNERS 或其他项目配置。
+        - 新 issue 应默认进入 canonical state role `needs-triage`，并带有合适 issue type。
+
+        ## 5. 同步 backend metadata
+
+        对支持 label 的 backend，先生成 dry-run：
+
+        ```text
+        create: ...
+        update: ...
+        unchanged: ...
+        conflict: ...
+        ```
+
+        经人类维护者确认后，再同步。
+
+        GitHub / GitLab 默认 label：
+
+        ```text
+        state:needs-triage
+        state:needs-info
+        state:ready-for-dev
+        state:in-progress
+        state:in-review
+        state:human-review
+        state:to-rework
+        state:to-merge
+        state:merged
+
+        type:bug
+        type:feature
+        type:task
+        type:docs
+        type:chore
+        ```
+
+        Local markdown backend 不需要创建 labels，但必须确认 frontmatter 字段与 tracker contract 一致。
+
+        ## 6. 检查运行环境
+
+        确认：
+
+        - `git` 可用。
+        - backend 可访问，或 local markdown 路径可写。
+        - 当前仓库能读取 default branch。
+        - validation commands 能运行，或已有明确 waiver。
+        - 外部 **Contract Consumer** 后续能读取本仓库的 `docs/issue-tracker-orbit/tracker-contract.md`。
+
+        ## 7. 验证初始化结果
+
+        完成后报告：
+
+        - tracker contract 是否 active。
+        - backend mapping 是否完整。
+        - backend templates 是否已安装或已合并。
+        - backend metadata 是否已同步。
+        - validation 配置是否可运行。
+        - 是否存在需要人类处理的冲突或未决事项。
+
+        ## 禁止事项
+
+        - 不要创建 worktree。
+        - 不要启动外部开发运行环境。
+        - 不要创建业务 review artifact。
+        - 不要修改业务代码。
+        - 不要 merge。
+        - 不要把 review output 当成人类 review decision。
+    include_in_projection: true
+    include_in_write: true
+    include_in_export: true
+    include_description_in_orchestration: true
+capabilities:
+    commands:
+        paths:
+            include:
+                - commands/issue-tracker-orbit/**/*.md
+    skills:
+        local:
+            paths:
+                include:
+                    - skills/issue-tracker-orbit/*
+content:
+    - name: issue-tracker-contract
+      role: rule
+      paths:
+        include:
+            - docs/issue-tracker-orbit/**
+behavior:
+    scope:
+        projection_roles:
+            - meta
+            - subject
+            - rule
+            - process
+        write_roles:
+            - meta
+            - rule
+        export_roles:
+            - meta
+            - rule
+        orchestration_roles:
+            - meta
+            - rule
+            - process
+    orchestration:
+        include_orbit_description: true
+        materialize_agents_from_meta: true
+

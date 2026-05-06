@@ -1,0 +1,26 @@
+name: Feature request
+labels:
+  - state:needs-triage
+  - type:feature
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / motivation
+      description: 这个功能解决什么问题？为什么现在需要？
+    validations:
+      required: true
+  - type: textarea
+    id: desired
+    attributes:
+      label: Desired behavior
+      description: 完成后应该是什么行为？
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope / non-goals
+      description: 哪些内容不在本 issue 范围内？
+    validations:
+      required: false

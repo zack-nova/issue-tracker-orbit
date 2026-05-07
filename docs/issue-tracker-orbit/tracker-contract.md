@@ -15,6 +15,9 @@ repository:
 
 issue:
     id_format: null
+    url_format: null
+    default_path_pattern: null
+    optional_path_patterns: []
     state:
         required: true
         cardinality: exactly_one
@@ -66,8 +69,13 @@ sections:
 
 review_artifact:
     required: true
+    storage: null
+    link_rule: null
+    default_path_pattern: null
 
-backend_mapping: {}
+templates:
+    issue_template_targets: []
+    review_artifact_template_targets: []
 
 validation:
     commands: []
@@ -95,15 +103,19 @@ safety:
         - validation_failed_without_waiver
         - review_artifact_missing
         - review_output_without_human_decision
+        - invalid_human_review_decision
         - runtime_ownership_modeled_as_issue_fact
 ```
 
 ## Notes
 
 - `backend` is the only backend selector. Do not add a second selector for PR/MR/local review type.
+- The YAML block has one machine source of truth. Do not add `backend_mapping` or duplicate issue, section, review artifact, or template mappings elsewhere in the block.
 - Do not add `consumers`, `permissions`, or runtime actor role fields. Consumer action authority is defined by the consumer's own orbit, tool, or human process.
+- `issue` maps issue identity, URL or path format, state, type, and metadata representation.
 - `issue.type` is the source of truth for issue type; the Dev Brief Type line is only a human-readable mirror and uses the canonical type value.
 - `sections` maps canonical issue section storage and headings. Required and optional section semantics are defined by the backend-neutral core.
-- `review_artifact.required` is a core gate. Its concrete form is defined by the selected backend mapping.
+- `review_artifact.required` is a core gate. Its concrete form is defined directly under `review_artifact`.
+- `templates` records installed or merged tracker template targets when bootstrap installs templates.
 - Concrete commands, API clients, and execution procedures belong to contract consumers, tools, or human process.
 - Contract consumers must read the YAML block before reading explanatory docs.

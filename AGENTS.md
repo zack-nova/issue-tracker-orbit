@@ -5,7 +5,7 @@
 ## 不可违反规则
 
 - 先读 `docs/issue-tracker-orbit/tracker-contract.md`。如果它仍是 `pending-bootstrap`，先执行 `BOOTSTRAP.md`。
-- 不要假设 issue 存在 GitHub。必须使用 tracker contract 里选择的 backend mapping。
+- 不要假设 issue 存在 GitHub。必须使用 tracker contract YAML block 里选择的 backend 和事实映射。
 - 每个 open issue 必须且只能有一个 canonical state role。
 - Issue 进入 `ready-for-dev` 前，必须有 exactly one issue type 和完整 `Dev Brief`。
 - Issue 进入 `in-progress` 前，必须已经处于 canonical state role `ready-for-dev`。

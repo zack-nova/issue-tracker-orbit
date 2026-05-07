@@ -59,8 +59,4 @@ resolution:
 
 ## Human Review Decision
 
-Decision: hold | rework | merge
-
-Reason:
-
--
+No human review decision has been recorded yet.

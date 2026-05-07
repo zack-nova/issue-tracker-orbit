@@ -20,8 +20,4 @@ Status: pending | changes-requested | approved
 
 ## Human Decision
 
-Decision: hold | rework | merge
-
-Reason:
-
--
+No human decision has been recorded yet.

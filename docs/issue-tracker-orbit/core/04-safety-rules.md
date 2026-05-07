@@ -24,7 +24,8 @@ Stop and ask a human maintainer when:
 - review state conflicts with issue state,
 - validation fails and no waiver exists,
 - review artifact is missing,
-- review output suggests action but no Human Review Decision exists.
+- review output suggests action but no Human Review Decision exists,
+- a Human Review Decision contains placeholder text, alternatives, an empty decision field, or multiple decision values,
 - a contract tries to model claim, running, retry, queue, or dispatcher ownership as issue facts.
 
 ## Prohibited

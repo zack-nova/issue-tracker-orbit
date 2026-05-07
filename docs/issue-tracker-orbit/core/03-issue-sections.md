@@ -70,4 +70,4 @@ merge
 
 `hold` keeps the issue in `human-review`. `rework` allows transition to `to-rework`. `merge` allows transition to `to-merge`; `to-merge` triggers Land, and Land success moves the issue to `merged`.
 
-A Human Review Decision is valid only when a human reviewer or maintainer records exactly one decision value. Placeholder text, alternative lists, missing `Decision:` lines, empty `Decision:` lines, and multi-value decision lines are not decisions.
+A Human Review Decision is valid only when a human reviewer or maintainer records exactly one decision value. Placeholder, empty, or multi-value decision text is not a decision.

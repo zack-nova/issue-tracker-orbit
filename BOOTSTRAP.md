@@ -32,7 +32,7 @@ other
 - 如果项目明确要求 Jira、Linear 或自定义系统，选择 `other`，并要求人类提供事实表示、review artifact 和安全规则。
 - 只有在没有 GitHub/GitLab/other tracker 证据，或项目明确要求本地管理时，才选择 `local-markdown`。
 
-不要因为本 orbit 带有 local markdown 模板就默认选择 `local-markdown`。真实项目已有 GitHub 或 GitLab tracker 时，优先使用已有 tracker。
+不要因为本 orbit 带有 local markdown 模板就默认选择 `local-markdown`。
 
 读取对应 adapter：
 

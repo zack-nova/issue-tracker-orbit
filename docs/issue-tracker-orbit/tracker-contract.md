@@ -110,12 +110,9 @@ safety:
 ## Notes
 
 - `backend` is the only backend selector. Do not add a second selector for PR/MR/local review type.
-- The YAML block has one machine source of truth. Do not add `backend_mapping` or duplicate issue, section, review artifact, or template mappings elsewhere in the block.
 - Do not add `consumers`, `permissions`, or runtime actor role fields. Consumer action authority is defined by the consumer's own orbit, tool, or human process.
-- `issue` maps issue identity, URL or path format, state, type, and metadata representation.
+- Do not add `backend_mapping`; `issue`, `sections`, `review_artifact`, and `templates` are the machine mapping fields.
 - `issue.type` is the source of truth for issue type; the Dev Brief Type line is only a human-readable mirror and uses the canonical type value.
 - `sections` maps canonical issue section storage and headings. Required and optional section semantics are defined by the backend-neutral core.
-- `review_artifact.required` is a core gate. Its concrete form is defined directly under `review_artifact`.
-- `templates` records installed or merged tracker template targets when bootstrap installs templates.
 - Concrete commands, API clients, and execution procedures belong to contract consumers, tools, or human process.
 - Contract consumers must read the YAML block before reading explanatory docs.

@@ -2,7 +2,7 @@
 
 Use this adapter only when the repository uses an issue tracker not covered by GitHub, GitLab, or local markdown.
 
-Bootstrap must write the selected backend's concrete facts directly into the `tracker-contract.md` contract block. Freeform prose is not enough, and a separate `backend_mapping` block would create a second machine source of truth.
+Bootstrap must write the selected backend's concrete facts directly into the `tracker-contract.md` contract block, not into a separate `backend_mapping` block.
 
 ## Required Mapping
 

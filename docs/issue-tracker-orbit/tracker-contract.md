@@ -2,7 +2,7 @@
 
 This file is generated or completed during bootstrap. It is the contract-consumer-readable source of truth for the repository's selected issue tracker backend and runtime rule mappings.
 
-If `status` is `pending-bootstrap`, do not use this repository for managed issue workflow yet. Complete `BOOTSTRAP.md` first.
+If `status` is `pending-bootstrap`, complete `BOOTSTRAP.md` first.
 
 ```yaml
 version: 1
@@ -10,92 +10,92 @@ status: pending-bootstrap
 backend: null
 
 repository:
-  id: null
-  default_branch: main
+    id: null
+    default_branch: main
 
 issue:
-  id_format: null
-  state:
-    required: true
-    cardinality: exactly_one
-    representation: null
-    values: {}
-  type:
-    required: true
-    cardinality: exactly_one
-    representation: null
-    values: {}
-  metadata:
-    priority:
-      required: false
-      representation: null
-      values: []
-    size:
-      required: false
-      representation: null
-      values: []
-    blocked:
-      required: false
-      representation: null
-      blocks_advancement: true
-      values: []
-    resolution:
-      required: false
-      representation: null
-      values: []
+    id_format: null
+    state:
+        required: true
+        cardinality: exactly_one
+        representation: null
+        values: {}
+    type:
+        required: true
+        cardinality: exactly_one
+        representation: null
+        values: {}
+    metadata:
+        priority:
+            required: false
+            representation: null
+            values: []
+        size:
+            required: false
+            representation: null
+            values: []
+        blocked:
+            required: false
+            representation: null
+            blocks_advancement: true
+            values: []
+        resolution:
+            required: false
+            representation: null
+            values: []
 
 sections:
-  triage-notes:
-    storage: null
-    heading: "## Triage Notes"
-  dev-brief:
-    storage: null
-    heading: "## Dev Brief"
-  dev-workpad:
-    storage: null
-    heading: "## Dev Workpad"
-  review-sweep:
-    storage: null
-    heading: "## Review Sweep"
-  human-review-decision:
-    storage: null
-    heading: "## Human Review Decision"
-  debt-notes:
-    storage: null
-    heading: "## Debt Notes"
+    triage-notes:
+        storage: null
+        heading: '## Triage Notes'
+    dev-brief:
+        storage: null
+        heading: '## Dev Brief'
+    dev-workpad:
+        storage: null
+        heading: '## Dev Workpad'
+    review-sweep:
+        storage: null
+        heading: '## Review Sweep'
+    human-review-decision:
+        storage: null
+        heading: '## Human Review Decision'
+    debt-notes:
+        storage: null
+        heading: '## Debt Notes'
 
 review_artifact:
-  required: true
+    required: true
 
 backend_mapping: {}
 
 validation:
-  commands: []
-  required_before_review: true
-  required_before_land: true
+    commands: []
+    required_before_review: true
+    required_before_land: true
 
 merge:
-  method: squash
-  delete_branch: true
+    method: squash
+    delete_branch: true
 
 safety:
-  dry_run_required_for:
-    - batch_issue_edits
-    - batch_metadata_changes
-    - template_install_or_overwrite
-    - branch_push
-    - review_artifact_create
-    - merge_or_land
-  hard_stops:
-    - issue_has_no_state
-    - issue_has_multiple_states
-    - dev_brief_type_missing_or_mismatched
-    - required_section_missing
-    - active_blocked_metadata
-    - validation_failed_without_waiver
-    - review_artifact_missing
-    - review_output_without_human_decision
-    - runtime_ownership_modeled_as_issue_fact
+    dry_run_required_for:
+        - batch_issue_edits
+        - batch_metadata_changes
+        - template_install_or_overwrite
+        - branch_push
+        - review_artifact_create
+        - merge_or_land
+    hard_stops:
+        - issue_has_no_state
+        - issue_has_multiple_states
+        - dev_brief_type_missing_or_mismatched
+        - required_section_missing
+        - active_blocked_metadata
+        - validation_failed_without_waiver
+        - review_artifact_missing
+        - review_output_without_human_decision
+        - runtime_ownership_modeled_as_issue_fact
 ```
 
 ## Notes

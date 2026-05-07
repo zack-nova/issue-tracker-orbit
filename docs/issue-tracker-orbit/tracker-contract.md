@@ -15,9 +15,6 @@ repository:
 
 issue:
     id_format: null
-    url_format: null
-    default_path_pattern: null
-    optional_path_patterns: []
     state:
         required: true
         cardinality: exactly_one
@@ -70,12 +67,6 @@ sections:
 review_artifact:
     required: true
     storage: null
-    link_rule: null
-    default_path_pattern: null
-
-templates:
-    issue_template_targets: []
-    review_artifact_template_targets: []
 
 validation:
     commands: []
@@ -111,7 +102,7 @@ safety:
 
 - `backend` is the only backend selector. Do not add a second selector for PR/MR/local review type.
 - Do not add `consumers`, `permissions`, or runtime actor role fields. Consumer action authority is defined by the consumer's own orbit, tool, or human process.
-- Do not add `backend_mapping`; `issue`, `sections`, `review_artifact`, and `templates` are the machine mapping fields.
+- Do not add `backend_mapping`; put machine mapping facts directly under `issue`, `sections`, and `review_artifact`.
 - `issue.type` is the source of truth for issue type; the Dev Brief Type line is only a human-readable mirror and uses the canonical type value.
 - `sections` maps canonical issue section storage and headings. Required and optional section semantics are defined by the backend-neutral core.
 - Concrete commands, API clients, and execution procedures belong to contract consumers, tools, or human process.

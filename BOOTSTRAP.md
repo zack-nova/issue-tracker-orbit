@@ -59,8 +59,7 @@ docs/issue-tracker-orbit/tracker-contract.md
 - 在 `issue` 中填写 issue id/path/URL、state、type、metadata 的 backend 表示。
 - 填写 canonical issue sections 的 storage 和 heading。
 - 在 `review_artifact` 中保留 `required: true`，并填写所选 backend 的 review artifact storage、link rule 或 path pattern。
-- 在 `templates` 中记录已安装或合并的 tracker template target。
-- 不要新增 `backend_mapping`；contract YAML block 只有 `issue`、`sections`、`review_artifact`、`templates` 这一套机器事实源。
+- 不要新增 `backend_mapping`；把机器事实直接写入 `issue`、`sections`、`review_artifact`，并只在有真实值时添加 backend-specific 字段。
 - 配置 validation commands。
 - 配置 land/merge policy，除非所选 backend 没有对应 policy。
 

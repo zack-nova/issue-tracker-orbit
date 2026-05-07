@@ -31,5 +31,5 @@ _Avoid_: Source template
 
 - "GitHub template" was used for both the source template group and the real `.github/` install target; resolved by using **Backend Template** for the source and **Template Target** for the install location.
 - New issue templates exposed `Decision: hold | rework | merge` as parseable placeholder text; resolved: templates do not create decision fields until a human writes one value.
-- `backend_mapping` duplicated contract facts; resolved: `issue`, `sections`, `review_artifact`, and `templates` are the machine mapping fields.
+- `backend_mapping` duplicated contract facts; resolved: `issue`, `sections`, and `review_artifact` are the machine mapping fields, with backend-specific fields added only when populated.
 - Local markdown templates looked like a default backend; resolved: bootstrap selects backend from project evidence and prefers existing GitHub/GitLab trackers.

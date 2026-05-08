@@ -6,72 +6,93 @@ If `status` is `pending-bootstrap`, complete `BOOTSTRAP.md` first.
 
 ```yaml
 version: 1
-status: pending-bootstrap
-backend: null
+status: active
+backend: github
 
 repository:
-    id: null
+    id: zack-nova/issue-tracker-orbit
     default_branch: main
 
 issue:
-    id_format: null
+    id_format: "#<number>"
+    url_format: "https://github.com/zack-nova/issue-tracker-orbit/issues/<number>"
     state:
         required: true
         cardinality: exactly_one
-        representation: null
-        values: {}
+        representation: label
+        prefix: "state:"
+        values:
+            needs-triage: "state:needs-triage"
+            needs-info: "state:needs-info"
+            needs-split: "state:needs-split"
+            blocked: "state:blocked"
+            ready-for-dev: "state:ready-for-dev"
+            in-progress: "state:in-progress"
+            in-review: "state:in-review"
+            human-review: "state:human-review"
+            to-rework: "state:to-rework"
+            to-merge: "state:to-merge"
+            merged: "state:merged"
+            duplicate: "state:duplicate"
+            cancelled: "state:cancelled"
     type:
         required: true
         cardinality: exactly_one
-        representation: null
-        values: {}
+        representation: label
+        prefix: "type:"
+        values:
+            bug: "type:bug"
+            feature: "type:feature"
+            task: "type:task"
+            docs: "type:docs"
+            chore: "type:chore"
     metadata:
         priority:
             required: false
-            representation: null
+            representation: label
+            prefix: "priority:"
             values: []
         size:
             required: false
-            representation: null
-            values: []
-        blocked:
-            required: false
-            representation: null
-            blocks_advancement: true
+            representation: label
+            prefix: "size:"
             values: []
         resolution:
             required: false
-            representation: null
+            representation: label
+            prefix: "resolution:"
             values: []
 
 sections:
     triage-notes:
-        storage: null
+        storage: issue_comment
         heading: '## Triage Notes'
     dev-brief:
-        storage: null
+        storage: issue_comment
         heading: '## Dev Brief'
     dev-workpad:
-        storage: null
+        storage: issue_comment
         heading: '## Dev Workpad'
     review-sweep:
-        storage: null
+        storage: issue_comment
         heading: '## Review Sweep'
     human-review-decision:
-        storage: null
+        storage: issue_comment
         heading: '## Human Review Decision'
     debt-notes:
-        storage: null
+        storage: issue_comment
         heading: '## Debt Notes'
 
 review_artifact:
     required: true
-    storage: null
+    storage: github_pull_request
+    link_rule: closing_reference
 
 validation:
     commands: []
-    required_before_review: true
-    required_before_land: true
+    required_before_review: false
+    required_before_land: false
+    waiver: "No automatic validation command is configured for this documentation-only orbit repository."
 
 merge:
     method: squash
@@ -90,7 +111,8 @@ safety:
         - issue_has_multiple_states
         - dev_brief_type_missing_or_mismatched
         - required_section_missing
-        - active_blocked_metadata
+        - split_state_advancement_without_resolution
+        - blocked_state_advancement_without_unblock
         - validation_failed_without_waiver
         - review_artifact_missing
         - review_output_without_human_decision

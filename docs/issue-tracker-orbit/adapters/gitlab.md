@@ -23,9 +23,6 @@ issue:
     size:
       representation: label
       prefix: "size:"
-    blocked:
-      representation: label
-      prefix: "blocked:"
     resolution:
       representation: label
       prefix: "resolution:"

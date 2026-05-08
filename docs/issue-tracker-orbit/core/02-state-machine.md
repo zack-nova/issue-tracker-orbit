@@ -6,6 +6,7 @@ Every open issue must have exactly one canonical state role.
 needs-triage
   -> needs-info
   -> needs-triage
+  -> needs-split
   -> ready-for-dev
   -> in-progress
   -> in-review
@@ -13,12 +14,21 @@ needs-triage
        -> human Decision: hold   -> human-review
        -> human Decision: rework -> to-rework -> in-review
        -> human Decision: merge  -> to-merge  -> land -> merged
+
+any active non-terminal state
+  -> blocked -> unblock -> needs-triage
+  -> duplicate
+  -> cancelled
 ```
+
+Active non-terminal states are canonical states other than `blocked`, `merged`, `duplicate`, and `cancelled`.
 
 ## State Meanings
 
 - `needs-triage`: New or changed issue awaiting evaluation.
 - `needs-info`: Waiting for reporter or owner information.
+- `needs-split`: The issue is too large to develop safely and must be split into smaller issues.
+- `blocked`: Advancement is paused by a dependency, external factor, or human decision.
 - `ready-for-dev`: A complete Dev Brief exists and development can start.
 - `in-progress`: active development work has been created or assigned.
 - `in-review`: A review artifact exists and review evidence is being collected.
@@ -26,15 +36,18 @@ needs-triage
 - `to-rework`: A human requested changes after review, and rework should be picked up.
 - `to-merge`: A human authorized integration, and land should be picked up.
 - `merged`: The review artifact has landed.
+- `duplicate`: The issue is superseded by another issue and should not advance independently.
+- `cancelled`: The issue was intentionally closed without delivery.
 
 ## State-triggered Operations
 
 - `needs-triage` triggers triage.
+- `needs-split` triggers issue splitting.
 - `ready-for-dev` triggers development start.
 - `in-review` triggers Review Sweep evidence collection.
 - `to-rework` triggers requested changes.
 - `to-merge` triggers Land.
-- `needs-info`, `in-progress`, `human-review`, and `merged` do not directly trigger runtime operations.
+- `needs-info`, `blocked`, `in-progress`, `human-review`, `merged`, `duplicate`, and `cancelled` do not directly trigger runtime operations.
 
 Contract consumers must prevent duplicate operation pickup through their own manager or orchestrator claim state. The tracker contract must not add claim, running, retry, queue, or dispatcher ownership fields or sections.
 
@@ -46,10 +59,23 @@ An issue can enter `ready-for-dev` only when:
 - one Dev Brief exists,
 - the Dev Brief Type mirror exists and matches the issue type,
 - no unanswered triage question remains,
-- no active blocked metadata exists,
 - acceptance criteria are clear,
 - validation plan is clear,
 - out-of-scope boundaries are explicit.
+
+An issue can enter `blocked` from any active non-terminal state when a dependency, external factor, or human decision prevents safe advancement. The blocking reason must be recorded in the appropriate issue section.
+
+An issue can leave `blocked` only when the blocker is resolved.
+
+An issue can enter `needs-split` when its scope is too large for one issue. The split reason and intended decomposition must be recorded in Triage Notes. After child issues are created, the original issue should move to `blocked` when it must wait for those child issues, and the child issue references must be recorded as blockers.
+
+An issue can leave `needs-split` only after smaller issue references are recorded, or after a human maintainer narrows the original issue enough to continue in another active non-terminal state.
+
+An issue can enter `duplicate` only when the superseding issue is recorded.
+
+An issue can enter `cancelled` only when the cancellation reason is recorded.
+
+`duplicate` and `cancelled` are terminal workflow states.
 
 An issue can enter `in-progress` only when:
 
@@ -81,4 +107,4 @@ If Land fails from `to-merge`, return the issue to `human-review`. Move it to `t
 
 ## Review Sweep Boundary
 
-Review Sweep records observations only. It may move an issue from `in-review` to `human-review`, but it must not decide `to-rework`, `to-merge`, or `merged`.
+Review Sweep records observations only. It may move an issue from `in-review` to `human-review`, but it must not decide `to-rework`, `to-merge`, `merged`, `duplicate`, or `cancelled`.

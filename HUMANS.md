@@ -16,6 +16,8 @@
 
 当 issue 信息不足时，具备 triage 职责的 **Contract Consumer** 会让 issue 保持在 `needs-info`，并记录 Triage Notes。你需要补充缺失事实或决定取消、拆分、降级。
 
+当 issue 太大、不能作为一个安全开发单元推进时，把它移到 `needs-split`。拆分原因和预期拆分方向应记录在 Triage Notes 或 Dev Brief；解除该状态前，需要记录拆出的更小 issue，或由人类维护者把原 issue 收窄到可继续推进的范围。
+
 ### Ready for Dev
 
 Issue 进入 `ready-for-dev` 前必须有完整 Dev Brief。你需要确认：
@@ -24,11 +26,17 @@ Issue 进入 `ready-for-dev` 前必须有完整 Dev Brief。你需要确认：
 - acceptance criteria 可验证，
 - validation plan 真实可执行，
 - out-of-scope 明确，
-- 没有 active blocked metadata。
+- issue 当前不处于 `blocked`。
 
 ### Blocked
 
-Blocked 不是状态。它表示当前 issue 被依赖、外部因素或人类决策阻塞。解除阻塞后，移除 blocked metadata；不要把 issue 当成新状态重开。
+`blocked` 是状态。它表示当前 issue 被依赖、外部因素或人类决策阻塞，暂时不能安全推进。
+
+### Duplicate / Cancelled
+
+`duplicate` 表示该 issue 已由另一个 issue 承接，必须记录 superseding issue。`cancelled` 表示维护者决定不再交付该 issue，必须记录取消原因。
+
+这两个都是终止状态。
 
 ### Debt Notes
 

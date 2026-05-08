@@ -112,6 +112,8 @@ GitHub / GitLab 默认 label：
 ```text
 state:needs-triage
 state:needs-info
+state:needs-split
+state:blocked
 state:ready-for-dev
 state:in-progress
 state:in-review
@@ -119,6 +121,8 @@ state:human-review
 state:to-rework
 state:to-merge
 state:merged
+state:duplicate
+state:cancelled
 
 type:bug
 type:feature

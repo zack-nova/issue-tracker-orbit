@@ -23,6 +23,8 @@ Use the issue type/category roles and state roles defined by the repository.
 
 Every triaged issue should carry exactly the role cardinality required by the repository contract. If state roles conflict, issue facts are missing, or the tracker disagrees with the contract, handle it according to the repository's hard-stop rules.
 
+Prefer AFK when the slice can be implemented, reviewed, and landed through objective repository gates. Use HITL only when safe advancement requires human interaction such as judgment calls, external access, design decisions, architecture decisions, or manual testing.
+
 The maintainer can override at any time. Apply requested overrides according to repository rules.
 
 ## Invocation
@@ -47,7 +49,7 @@ Show counts and a one-line summary per issue, then triage according to repositor
 
 1. **Gather context.** Read the full issue: body, comments, configured metadata, role facts, reporter, dates, and relevant repository-defined sections. Parse prior triage records so you do not re-ask resolved questions. Explore the codebase using the project's domain glossary, respecting ADRs in the area. Read the repository's out-of-scope records and surface any prior rejection that resembles this issue.
 
-2. **Recommend.** Decide the type/category and state recommendation using repository terminology, with reasoning and a brief codebase summary relevant to the issue. Continue toward the best valid outcome allowed by the repository rules.
+2. **Recommend.** Decide the type/category, state, and delegation suitability recommendation using repository terminology, with reasoning and a brief codebase summary relevant to the issue. Continue toward the best valid outcome allowed by the repository rules.
 
 3. **Reproduce defects.** For issues that the repository taxonomy treats as defects, attempt reproduction before choosing an outcome: read the reporter's steps, trace the relevant code, and run focused tests or commands. Report what happened: successful repro with code path, failed repro, or insufficient detail.
 
@@ -57,13 +59,13 @@ Show counts and a one-line summary per issue, then triage according to repositor
 
 ## Apply Outcomes
 
-- If the issue is ready for delegated implementation, write the repository-defined agent/development brief before moving it to the appropriate ready state.
-- If the issue needs human implementation, use the same repository-defined brief structure and note why delegation is not appropriate.
+- If the issue is ready for delegated implementation, write the repository-defined agent/development brief before moving it to the appropriate ready state. When supported, mark or mirror delivery mode as AFK.
+- If the issue needs human interaction, use the same repository-defined brief structure and note why delegation is not appropriate. When supported, mark or mirror delivery mode as HITL.
 - If more information is required, move the issue to the repository-defined missing-information state when one exists, and post triage notes using the repository's configured triage record format.
 - If the issue is too large, record the split reason and intended decomposition before any state change.
 - If the issue is blocked, record the blocker in the repository-defined place before any state change.
 - If the issue should not be actioned, follow the repository's configured cancellation, resolution, out-of-scope catalog, duplicate, and closure rules.
-- If review workflow is involved, follow the repository's review evidence and human decision gates exactly.
+- If review workflow is involved, follow the repository's review evidence, optional human-review state, AFK advancement rules, and human decision gates exactly.
 
 ## Quick State Override
 

@@ -40,6 +40,22 @@ _Avoid_: Cancelled state, resolution
 A cancellation resolution used when an issue is superseded by another managed issue and should not advance independently.
 _Avoid_: Duplicate state, duplicate issue database
 
+**Delivery Slice**:
+A managed delivery issue small enough to be implemented, reviewed, and landed as one unit.
+_Avoid_: Runtime session, worktree, actor assignment
+
+**Delivery Mode**:
+Optional issue metadata that classifies a Delivery Slice as `afk` or `hitl`.
+_Avoid_: State role, ownership field, queue claim
+
+**AFK Slice**:
+A Delivery Slice that can be implemented, reviewed, and landed without human interaction when objective repository gates pass.
+_Avoid_: Unreviewed work, lower-quality work
+
+**HITL Slice**:
+A Delivery Slice that needs human interaction because safe advancement depends on judgment calls, external access, design decisions, architecture decisions, or manual testing.
+_Avoid_: Blocked issue, human-owned issue
+
 ## Relationships
 
 - A **Backend Template** belongs to exactly one backend.
@@ -62,6 +78,12 @@ _Avoid_: Duplicate state, duplicate issue database
 - `state:cancelled`, `resolution:wontfix`, and `resolution:duplicate` are issue facts; **Tracker Closure** is a separate maintainer-owned operation.
 - GitHub and GitLab perform **Tracker Closure** with the platform close action; local markdown performs it by moving the issue file from an open folder to a closed folder.
 - A contract consumer may record an out-of-scope match, update state and resolution facts, and append prior requests, but must not perform **Tracker Closure**.
+- A **Delivery Slice** may omit **Delivery Mode** when the repository or issue does not need that classification.
+- When **Delivery Mode** is recorded, it has exactly one value: `afk` or `hitl`.
+- **AFK Slice** is the preferred classification when the work can safely pass through implementation, review, and land using objective repository gates.
+- **HITL Slice** requires a recorded note explaining why the slice cannot be delegated without human interaction.
+- `human-review` is an optional state for **HITL Slices** or for **AFK Slices** that a contract consumer escalates because review evidence shows human judgment is needed.
+- `human-review` is not a mandatory state for every **Delivery Slice** after `in-review`.
 
 ## Example Dialogue
 
@@ -85,6 +107,12 @@ _Avoid_: Duplicate state, duplicate issue database
 >
 > **Dev:** "When should we split `Out-of-Scope Catalog: Overall`?"
 > **Domain expert:** "Only when the catalog becomes hard to browse, match, or edit; entry slugs stay stable when moved."
+>
+> **Dev:** "Should every review go through `human-review`?"
+> **Domain expert:** "No — an **AFK Slice** can skip `human-review` when objective review gates pass. A **HITL Slice** enters `human-review` and records why human interaction is required."
+>
+> **Dev:** "Is `hitl` the same as assigning the issue to a person?"
+> **Domain expert:** "No — **Delivery Mode** is optional metadata about delegation safety, not runtime ownership or queue state."
 
 ## Flagged Ambiguities
 
@@ -98,3 +126,5 @@ _Avoid_: Duplicate state, duplicate issue database
 - "Required issue sections" originally implied every managed issue needed delivery sections; resolved: **Out-of-Scope Catalog Issues** require an **Out-of-Scope Catalog Section** instead.
 - "Closed issue" was used for both terminal workflow state and backend closure; resolved: use `state:cancelled` for workflow termination and **Tracker Closure** for the platform close action or local markdown file move.
 - "Duplicate issue" was used as a terminal workflow state; resolved: use `state:cancelled` with **Duplicate Resolution** and a superseding issue reference.
+- "Slice" was introduced as a delivery unit; resolved: use **Delivery Slice** when the unit is a managed delivery issue, and do not use it for runtime sessions or worktrees.
+- "Human review" was treated as a required post-review state; resolved: `human-review` is optional and used only for **HITL Slices** or when an **AFK Slice** is escalated by review evidence.

@@ -12,6 +12,7 @@ The generated tracker contract must specify:
 - where state is stored,
 - where issue type is stored,
 - how optional metadata is stored,
+- how optional delivery mode is stored when supported, with only `afk` and `hitl` as canonical values,
 - where each canonical issue section is stored,
 - where the Out-of-Scope Catalog section is stored for issues with type `out-of-scope`,
 - how the review artifact is identified,

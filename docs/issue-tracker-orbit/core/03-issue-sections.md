@@ -11,6 +11,7 @@ Issue sections are canonical structured parts of an issue. They are backend-neut
 `dev-brief` is the development contract. It records:
 
 - issue type as a mirror of tracker metadata,
+- optional delivery mode mirror and rationale,
 - summary,
 - current behavior or context,
 - desired behavior,
@@ -22,6 +23,8 @@ Issue sections are canonical structured parts of an issue. They are backend-neut
 Development must not expand beyond Dev Brief scope without updating the issue or creating a follow-up issue.
 
 The issue tracker's configured issue type representation remains the source of truth. The Dev Brief Type mirror uses the canonical type value, not backend-specific label syntax. If the Dev Brief Type mirror is missing or conflicts with tracker metadata, stop advancement until a human maintainer resolves the mismatch.
+
+The issue tracker's configured delivery mode representation remains the source of truth when the repository contract defines it.
 
 ## Dev Workpad
 
@@ -50,7 +53,7 @@ When a Debt Notes entry is promoted to a managed issue, update its follow-up iss
 
 Debt Notes are not lifecycle gates, review decisions, hidden follow-up issues, or a second status workflow.
 
-If a technical debt observation should block or change the current issue's delivery, promote it into review evidence and require a Human Review Decision instead of leaving it only in Debt Notes.
+If a technical debt observation should block or change the current issue's delivery, promote it into review evidence. Require a Human Review Decision when the issue is in `human-review` or the observation depends on human judgment.
 
 ## Out-of-Scope Catalog
 
@@ -87,9 +90,13 @@ Creating the first Out-of-Scope Catalog issue is lazy. Backend templates should 
 
 It is not a human decision.
 
+Review Sweep may record whether the observed review evidence is AFK-eligible, requires AFK rework, or requires `human-review`. That classification is review evidence, not a Human Review Decision.
+
 ## Human Review Decision
 
-`human-review-decision` is the only source for post-review decisions:
+`human-review-decision` is required only when an issue is in `human-review` or when `hitl` delivery mode requires a post-review decision.
+
+When required, `human-review-decision` is the only source for post-review human decisions:
 
 ```text
 hold
@@ -100,3 +107,5 @@ merge
 `hold` keeps the issue in `human-review`. `rework` allows transition to `to-rework`. `merge` allows transition to `to-merge`; `to-merge` triggers Land, and Land success moves the issue to `merged`.
 
 A Human Review Decision is valid only when a human reviewer or maintainer records exactly one decision value. Placeholder, empty, or multi-value decision text is not a decision.
+
+AFK review advancement must not create or simulate a Human Review Decision. It advances from `in-review` using objective Review Sweep evidence and the state machine gates.

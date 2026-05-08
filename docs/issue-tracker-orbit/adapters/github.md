@@ -23,6 +23,9 @@ issue:
     size:
       representation: label
       prefix: "size:"
+    delivery_mode:
+      representation: label
+      prefix: "delivery-mode:"
     resolution:
       representation: label
       prefix: "resolution:"
@@ -52,6 +55,7 @@ templates:
 ## Rules
 
 - GitHub labels carry canonical state, type, and optional metadata facts.
+- If delivery mode is used, GitHub labels should be `delivery-mode:afk` or `delivery-mode:hitl`.
 - GitHub issue comments carry delivery issue sections.
 - GitHub issue body carries the Out-of-Scope Catalog section for issues with type `out-of-scope`.
 - GitHub pull requests are the review artifact path for review and land.

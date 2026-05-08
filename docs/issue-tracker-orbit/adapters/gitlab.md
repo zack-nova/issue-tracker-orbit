@@ -23,6 +23,9 @@ issue:
     size:
       representation: label
       prefix: "size:"
+    delivery_mode:
+      representation: label
+      prefix: "delivery-mode:"
     resolution:
       representation: label
       prefix: "resolution:"
@@ -48,6 +51,7 @@ review_artifact:
 ## Rules
 
 - GitLab labels carry canonical state, type, and optional metadata facts.
+- If delivery mode is used, GitLab labels should be `delivery-mode:afk` or `delivery-mode:hitl`.
 - GitLab issue notes carry delivery issue sections.
 - GitLab issue description carries the Out-of-Scope Catalog section for issues with type `out-of-scope`.
 - GitLab merge requests are the review artifact path for review and land.

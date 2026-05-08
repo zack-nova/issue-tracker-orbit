@@ -19,4 +19,4 @@ backends/local-markdown/
 
 `issue-sections/` 下的文件用于具备相应职责的 **Contract Consumer** 在 issue tracker 中创建或更新 canonical issue sections。
 
-可选 issue section（例如 `debt-notes`）只在确实有内容需要记录时创建。
+可选 issue section（例如 `debt-notes`）只在确实有内容需要记录时创建。`human-review-decision` 也是条件性 section：只有 issue 进入 `human-review`，或 delivery mode 为 `hitl` 且需要 post-review human decision 时才创建。

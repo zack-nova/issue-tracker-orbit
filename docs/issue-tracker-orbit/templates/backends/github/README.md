@@ -18,4 +18,11 @@ state:<role>
 type:<type>
 ```
 
+如果仓库启用 delivery mode metadata，使用可选 label：
+
+```text
+delivery-mode:afk
+delivery-mode:hitl
+```
+
 `out-of-scope-catalog.yml` is a special catalog issue template. It creates an issue with `state:cancelled` and `type:out-of-scope` and uses the issue body for `## Out-of-Scope Catalog` instead of delivery sections. Install the template during bootstrap, but create the actual catalog issue lazily when the maintainer enables the catalog or the first out-of-scope decision needs to be recorded.

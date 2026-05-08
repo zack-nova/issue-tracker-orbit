@@ -28,7 +28,7 @@
 - `adapters/local-markdown.md`
 - `adapters/other.md`
 
-Bootstrap 选择一个 backend adapter，并生成当前仓库的 `tracker-contract.md`。
+Bootstrap 按 `BOOTSTRAP.md` 自动解析 backend adapter，并生成当前仓库的 `tracker-contract.md`。
 
 ## Templates
 

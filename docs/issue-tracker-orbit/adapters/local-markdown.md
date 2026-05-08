@@ -24,9 +24,6 @@ issue:
     size:
       representation: frontmatter
       field: size
-    blocked:
-      representation: frontmatter
-      field: blocked
     resolution:
       representation: frontmatter
       field: resolution

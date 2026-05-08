@@ -3,7 +3,8 @@
 ```md
 ## Human Review Decision
 
-Decision: hold | rework | merge
+Choose one value before publishing: hold, rework, or merge.
+Add exactly one decision line before publishing, for example `Decision: hold`.
 
 Reason:
 -

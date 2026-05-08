@@ -19,12 +19,14 @@ Stop and ask a human maintainer when:
 - an open issue has multiple states,
 - the Dev Brief Type mirror is missing or conflicts with issue type metadata,
 - a required issue section is missing,
-- active blocked metadata exists,
+- an issue in `needs-split` advances without recorded split resolution,
+- an issue in `blocked` advances without an explicit unblock transition,
 - a template target exists and differs from the proposed template,
 - review state conflicts with issue state,
 - validation fails and no waiver exists,
 - review artifact is missing,
-- review output suggests action but no Human Review Decision exists.
+- review output suggests action but no Human Review Decision exists,
+- a Human Review Decision is empty, placeholder text, or has multiple values,
 - a contract tries to model claim, running, retry, queue, or dispatcher ownership as issue facts.
 
 ## Prohibited

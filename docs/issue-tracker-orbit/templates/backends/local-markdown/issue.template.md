@@ -3,7 +3,6 @@ state: needs-triage
 type: task
 priority:
 size:
-blocked:
 resolution:
 ---
 
@@ -59,8 +58,4 @@ resolution:
 
 ## Human Review Decision
 
-Decision: hold | rework | merge
-
-Reason:
-
--
+No human review decision has been recorded yet.

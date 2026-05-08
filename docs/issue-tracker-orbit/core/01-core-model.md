@@ -22,6 +22,8 @@ Canonical state roles are unprefixed:
 ```text
 needs-triage
 needs-info
+needs-split
+blocked
 ready-for-dev
 in-progress
 in-review
@@ -29,6 +31,8 @@ human-review
 to-rework
 to-merge
 merged
+duplicate
+cancelled
 ```
 
 Issue type is also backend-neutral:
@@ -45,9 +49,7 @@ The issue tracker's configured issue type representation is the source of truth 
 
 ## Optional Metadata
 
-Priority, size, blocked reason, and resolution are optional metadata unless the repository tracker contract makes them stricter.
-
-Blocked reason prevents unsafe advancement. It is not a lifecycle state.
+Priority, size, and resolution are optional metadata unless the repository tracker contract makes them stricter.
 
 ## Issue Sections
 

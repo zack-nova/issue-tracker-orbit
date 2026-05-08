@@ -39,6 +39,7 @@ issue:
             representation: null
             values:
                 - wontfix
+                - duplicate
 
 sections:
     triage-notes:
@@ -90,6 +91,7 @@ safety:
         - dev_brief_type_missing_or_mismatched
         - required_section_missing
         - split_state_advancement_without_resolution
+        - duplicate_resolution_without_superseding_issue
         - blocked_state_advancement_without_unblock
         - validation_failed_without_waiver
         - review_artifact_missing

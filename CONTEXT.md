@@ -36,6 +36,10 @@ _Avoid_: Agent rejection, similarity match
 The backend-specific action that removes an issue from the active open set.
 _Avoid_: Cancelled state, resolution
 
+**Duplicate Resolution**:
+A cancellation resolution used when an issue is superseded by another managed issue and should not advance independently.
+_Avoid_: Duplicate state, duplicate issue database
+
 ## Relationships
 
 - A **Backend Template** belongs to exactly one backend.
@@ -51,10 +55,11 @@ _Avoid_: Cancelled state, resolution
 - An **Out-of-Scope Catalog Issue** requires one **Out-of-Scope Catalog Section** instead of delivery sections such as Dev Brief, Dev Workpad, Review Sweep, and Human Review Decision.
 - Categories are represented by separate **Out-of-Scope Catalog Issues**, not multiple Out-of-Scope Catalog sections in one issue.
 - A rejected feature request remains type `feature`, enters terminal state `cancelled`, records resolution `wontfix`, and is linked from a matching **Out-of-Scope Catalog Entry**.
+- A superseded issue keeps its original issue type, enters terminal state `cancelled`, records **Duplicate Resolution** as `resolution:duplicate`, and references the superseding issue.
 - A new **Out-of-Scope Catalog Entry** is created only after an **Out-of-Scope Decision**.
 - Splitting catalog issues moves **Out-of-Scope Catalog Entries** without changing their stable slugs or prior request references.
 - Prior requests in an **Out-of-Scope Catalog Entry** use an issue reference plus a title snapshot.
-- `state:cancelled` and `resolution:wontfix` are issue facts; **Tracker Closure** is a separate maintainer-owned operation.
+- `state:cancelled`, `resolution:wontfix`, and `resolution:duplicate` are issue facts; **Tracker Closure** is a separate maintainer-owned operation.
 - GitHub and GitLab perform **Tracker Closure** with the platform close action; local markdown performs it by moving the issue file from an open folder to a closed folder.
 - A contract consumer may record an out-of-scope match, update state and resolution facts, and append prior requests, but must not perform **Tracker Closure**.
 
@@ -92,3 +97,4 @@ _Avoid_: Cancelled state, resolution
 - "Catalog" was considered as a metadata marker; resolved: catalog names classify long-lived directory issues, while canonical issue type `out-of-scope` identifies their workflow role.
 - "Required issue sections" originally implied every managed issue needed delivery sections; resolved: **Out-of-Scope Catalog Issues** require an **Out-of-Scope Catalog Section** instead.
 - "Closed issue" was used for both terminal workflow state and backend closure; resolved: use `state:cancelled` for workflow termination and **Tracker Closure** for the platform close action or local markdown file move.
+- "Duplicate issue" was used as a terminal workflow state; resolved: use `state:cancelled` with **Duplicate Resolution** and a superseding issue reference.

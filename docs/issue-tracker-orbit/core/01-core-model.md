@@ -31,7 +31,6 @@ human-review
 to-rework
 to-merge
 merged
-duplicate
 cancelled
 ```
 
@@ -46,13 +45,13 @@ chore
 out-of-scope
 ```
 
-`out-of-scope` is reserved for long-lived catalog issues that record rejected feature concepts for deduplication and institutional memory. Ordinary rejected feature requests remain `feature` issues, enter `cancelled` with resolution `wontfix`, and reference an out-of-scope catalog entry before tracker closure.
+`out-of-scope` is reserved for long-lived catalog issues that record rejected feature concepts for deduplication and institutional memory. Ordinary rejected feature requests remain `feature` issues, enter `cancelled` with resolution `wontfix`, and reference an out-of-scope catalog entry before tracker closure. Superseded issues keep their original type, enter `cancelled` with resolution `duplicate`, and reference the superseding issue.
 
 The issue tracker's configured issue type representation is the source of truth for issue type.
 
 ## Optional Metadata
 
-Priority, size, and resolution are optional metadata unless the repository tracker contract makes them stricter.
+Priority, size, and resolution are optional metadata unless the repository tracker contract makes them stricter. Resolution records why a terminal non-delivery issue was cancelled when the reason has a canonical value, such as `wontfix` or `duplicate`.
 
 ## Issue Sections
 

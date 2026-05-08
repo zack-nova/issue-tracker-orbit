@@ -17,3 +17,5 @@ Bootstrap 时将它们安全安装或合并到：
 state:<role>
 type:<type>
 ```
+
+`out-of-scope-catalog.yml` is a special catalog issue template. It creates an issue with `state:cancelled` and `type:out-of-scope` and uses the issue body for `## Out-of-Scope Catalog` instead of delivery sections. Install the template during bootstrap, but create the actual catalog issue lazily when the maintainer enables the catalog or the first out-of-scope decision needs to be recorded.

@@ -31,7 +31,6 @@ human-review
 to-rework
 to-merge
 merged
-duplicate
 cancelled
 ```
 
@@ -43,19 +42,22 @@ feature
 task
 docs
 chore
+out-of-scope
 ```
 
-The issue tracker's configured issue type representation is the source of truth for issue type. The Type line in `dev-brief` is a human-readable mirror of that issue fact and uses the canonical type value, not backend-specific label syntax.
+`out-of-scope` is reserved for long-lived catalog issues that record rejected feature concepts for deduplication and institutional memory. Ordinary rejected feature requests remain `feature` issues, enter `cancelled` with resolution `wontfix`, and reference an out-of-scope catalog entry before tracker closure. Superseded issues keep their original type, enter `cancelled` with resolution `duplicate`, and reference the superseding issue.
+
+The issue tracker's configured issue type representation is the source of truth for issue type.
 
 ## Optional Metadata
 
-Priority, size, and resolution are optional metadata unless the repository tracker contract makes them stricter.
+Priority, size, and resolution are optional metadata unless the repository tracker contract makes them stricter. Resolution records why a terminal non-delivery issue was cancelled when the reason has a canonical value, such as `wontfix` or `duplicate`.
 
 ## Issue Sections
 
 The core defines canonical issue sections. Backend adapters decide whether those sections are comments, notes, markdown headings, fields, or another storage form.
 
-Required canonical sections:
+Required canonical sections for delivery issues (`bug`, `feature`, `task`, `docs`, and `chore`):
 
 ```text
 triage-notes
@@ -65,6 +67,14 @@ review-sweep
 human-review-decision
 ```
 
+Required canonical sections for `out-of-scope` catalog issues:
+
+```text
+out-of-scope-catalog
+```
+
+`out-of-scope` catalog issues do not require delivery sections because they are terminal workflow records, not development work.
+
 Optional canonical sections:
 
 ```text
@@ -73,7 +83,7 @@ debt-notes
 
 ## Review Artifact
 
-A review artifact is required before an issue enters review. The selected backend decides its concrete form:
+A review artifact is required before a delivery issue enters review. `out-of-scope` catalog issues do not enter review and do not require review artifacts. The selected backend decides a review artifact's concrete form:
 
 - GitHub maps it to a pull request.
 - GitLab maps it to a merge request.

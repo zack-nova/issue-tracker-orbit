@@ -52,6 +52,35 @@ Debt Notes are not lifecycle gates, review decisions, hidden follow-up issues, o
 
 If a technical debt observation should block or change the current issue's delivery, promote it into review evidence and require a Human Review Decision instead of leaving it only in Debt Notes.
 
+## Out-of-Scope Catalog
+
+`out-of-scope-catalog` records rejected feature concepts for deduplication and institutional memory.
+
+Each catalog entry records:
+
+- concept name,
+- stable kebab-case slug,
+- decision,
+- durable reason,
+- related but allowed concepts when useful,
+- prior request issue references.
+
+An `out-of-scope` issue must have exactly one Out-of-Scope Catalog section and does not require Dev Brief, Dev Workpad, Review Sweep, or Human Review Decision sections. Ordinary rejected feature requests remain type `feature`, are cancelled with resolution `wontfix`, and are recorded as prior requests inside a matching catalog entry.
+
+Do not use multiple `## Out-of-Scope Catalog` sections inside one issue for categories. Use one section with multiple entries, or split entries into separate Out-of-Scope Catalog issues when maintenance pressure appears.
+
+Prior requests should use an issue reference with a title snapshot, such as `#42 — "Add dark mode support"`. Do not expand prior requests into a duplicate issue database.
+
+A contract consumer may create a new catalog entry only after a maintainer has decided that the feature request is out of scope. Similarity matching alone is not a maintainer decision.
+
+Repositories should start with one general Out-of-Scope Catalog issue. Split into category-specific catalog issues only when the catalog becomes hard to browse, matching requires reading too many unrelated entries, entries form stable categories, or edit conflicts become common. Splitting moves entries without changing their stable slugs or prior request references.
+
+Out-of-Scope Catalog issue titles should use the `Out-of-Scope Catalog: <Category>` pattern. The category is a human-readable title segment, not a canonical tracker metadata value.
+
+Contract consumers discover Out-of-Scope Catalog issues through canonical issue type `out-of-scope`.
+
+Creating the first Out-of-Scope Catalog issue is lazy. Backend templates should provide an `Out-of-Scope Catalog: Overall` template, but bootstrap does not need to create an empty catalog issue unless the maintainer explicitly enables the catalog or the first out-of-scope decision needs to be recorded.
+
 ## Review Sweep
 
 `review-sweep` records **Review Sweep Producer** observations about checks, reviews, comments, and potentially actionable items.

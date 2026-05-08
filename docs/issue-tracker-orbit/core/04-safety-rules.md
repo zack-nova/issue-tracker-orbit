@@ -17,10 +17,12 @@ Stop and ask a human maintainer when:
 
 - an open issue has no state,
 - an open issue has multiple states,
-- the Dev Brief Type mirror is missing or conflicts with issue type metadata,
+- the Dev Brief Type mirror on a delivery issue is missing or conflicts with issue type metadata,
 - a required issue section is missing,
+- an `out-of-scope` issue has delivery sections instead of exactly one Out-of-Scope Catalog section,
 - an issue in `needs-split` advances without recorded split resolution,
 - an issue in `blocked` advances without an explicit unblock transition,
+- an issue is cancelled with resolution `duplicate` but no superseding issue reference,
 - a template target exists and differs from the proposed template,
 - review state conflicts with issue state,
 - validation fails and no waiver exists,

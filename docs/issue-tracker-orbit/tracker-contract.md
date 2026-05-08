@@ -37,7 +37,8 @@ issue:
         resolution:
             required: false
             representation: null
-            values: []
+            values:
+                - wontfix
 
 sections:
     triage-notes:
@@ -58,6 +59,9 @@ sections:
     debt-notes:
         storage: null
         heading: '## Debt Notes'
+    out-of-scope-catalog:
+        storage: null
+        heading: '## Out-of-Scope Catalog'
 
 review_artifact:
     required: true

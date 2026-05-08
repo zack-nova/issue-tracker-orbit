@@ -9,8 +9,10 @@ backend: local-markdown
 
 issue:
   id_format: "<path>"
-  default_issue_path_pattern: ".scratch/issues/<number>-<slug>.md"
-  optional_feature_issue_path_pattern: ".scratch/<feature-slug>/issues/<number>-<slug>.md"
+  open_issue_path_pattern: ".scratch/issues/open/<number>-<slug>.md"
+  closed_issue_path_pattern: ".scratch/issues/closed/<number>-<slug>.md"
+  optional_feature_open_issue_path_pattern: ".scratch/<feature-slug>/issues/open/<number>-<slug>.md"
+  optional_feature_closed_issue_path_pattern: ".scratch/<feature-slug>/issues/closed/<number>-<slug>.md"
   state:
     representation: frontmatter
     field: state
@@ -37,6 +39,7 @@ sections:
     review-sweep: "## Review Sweep"
     human-review-decision: "## Human Review Decision"
     debt-notes: "## Debt Notes"
+    out-of-scope-catalog: "## Out-of-Scope Catalog"
 
 review_artifact:
   storage: local_markdown_file
@@ -61,10 +64,13 @@ It does not simulate inline PR comments, checks UI, branch protections, or merge
 
 ## Operations
 
-- Create issue: create a markdown file from `templates/backends/local-markdown/issue.template.md`.
+- Create delivery issue: create a markdown file from `templates/backends/local-markdown/issue.template.md` in the configured open issue folder.
+- Create out-of-scope catalog issue: create a markdown file from `templates/backends/local-markdown/out-of-scope-catalog.template.md` in the configured open issue folder.
 - Read issue: parse frontmatter and canonical markdown sections.
 - Update state or metadata: edit frontmatter.
 - Add or update issue section: edit the matching markdown heading.
+- Read out-of-scope catalog: parse issues with type `out-of-scope`, state `cancelled`, and the `## Out-of-Scope Catalog` heading.
+- Close issue: move the markdown file from the configured open issue folder to the configured closed issue folder.
 - Create review artifact: create a markdown file from `templates/backends/local-markdown/review-artifact.template.md`.
 
-Bootstrap must choose the concrete issue path pattern and review artifact path pattern for the repository.
+Bootstrap must choose the concrete open issue path pattern, closed issue path pattern, and review artifact path pattern for the repository.

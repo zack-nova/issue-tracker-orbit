@@ -37,7 +37,7 @@ Active non-terminal states are canonical states other than `blocked`, `merged`, 
 - `to-merge`: A human authorized integration, and land should be picked up.
 - `merged`: The review artifact has landed.
 - `duplicate`: The issue is superseded by another issue and should not advance independently.
-- `cancelled`: The issue was intentionally closed without delivery.
+- `cancelled`: The issue was intentionally ended without delivery.
 
 ## State-triggered Operations
 
@@ -76,6 +76,12 @@ An issue can enter `duplicate` only when the superseding issue is recorded.
 An issue can enter `cancelled` only when the cancellation reason is recorded.
 
 `duplicate` and `cancelled` are terminal workflow states.
+
+An ordinary feature request rejected as out of scope remains type `feature`, enters `cancelled`, records resolution `wontfix` when the tracker contract supports resolution metadata, and references the matching Out-of-Scope Catalog entry. Backend tracker closure remains a separate maintainer action.
+
+An issue with type `out-of-scope` must have exactly one Out-of-Scope Catalog section before it enters `cancelled`. It must not enter delivery states such as `ready-for-dev`, `in-progress`, `in-review`, `human-review`, `to-rework`, or `to-merge`.
+
+An issue with type `out-of-scope` must have canonical state `cancelled`. Any other state on an `out-of-scope` issue is a state conflict.
 
 An issue can enter `in-progress` only when:
 

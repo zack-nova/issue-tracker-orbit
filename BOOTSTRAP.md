@@ -83,7 +83,8 @@ GitHub backend 常见目标：
 Local markdown backend 常见目标：
 
 ```text
-.scratch/issues/
+.scratch/issues/open/
+.scratch/issues/closed/
 .scratch/reviews/
 ```
 
@@ -129,6 +130,7 @@ type:feature
 type:task
 type:docs
 type:chore
+type:out-of-scope
 ```
 
 Local markdown backend 不需要创建 labels，但必须确认 frontmatter 字段与 tracker contract 一致。

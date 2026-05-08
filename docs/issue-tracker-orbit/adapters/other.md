@@ -13,6 +13,7 @@ The generated tracker contract must specify:
 - where issue type is stored,
 - how optional metadata is stored,
 - where each canonical issue section is stored,
+- where the Out-of-Scope Catalog section is stored for issues with type `out-of-scope`,
 - how the review artifact is identified,
 - where review and land evidence is recorded,
 - how validation evidence is recorded,

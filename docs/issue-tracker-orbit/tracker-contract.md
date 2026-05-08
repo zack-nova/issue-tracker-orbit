@@ -34,6 +34,12 @@ issue:
             required: false
             representation: null
             values: []
+        delivery_mode:
+            required: false
+            representation: null
+            values:
+                - afk
+                - hitl
         resolution:
             required: false
             representation: null
@@ -95,8 +101,10 @@ safety:
         - blocked_state_advancement_without_unblock
         - validation_failed_without_waiver
         - review_artifact_missing
-        - review_output_without_human_decision
+        - hitl_review_output_without_human_decision
         - invalid_human_review_decision
+        - invalid_delivery_mode
+        - hitl_delivery_mode_without_rationale
         - runtime_ownership_modeled_as_issue_fact
 ```
 
@@ -106,6 +114,7 @@ safety:
 - Do not add `consumers`, `permissions`, or runtime actor role fields. Consumer action authority is defined by the consumer's own orbit, tool, or human process.
 - Do not add `backend_mapping`; put machine mapping facts directly under `issue`, `sections`, and `review_artifact`.
 - `issue.type` is the source of truth for issue type; the Dev Brief Type line is only a human-readable mirror and uses the canonical type value.
+- `issue.metadata.delivery_mode` is optional. When present, it records whether a delivery slice is `afk` or `hitl`; it is not a state role or runtime ownership field.
 - `sections` maps canonical issue section storage and headings. Required and optional section semantics are defined by the backend-neutral core.
 - Concrete commands, API clients, and execution procedures belong to contract consumers, tools, or human process.
 - Contract consumers must read the YAML block before reading explanatory docs.

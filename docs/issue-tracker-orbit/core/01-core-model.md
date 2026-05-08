@@ -53,6 +53,17 @@ The issue tracker's configured issue type representation is the source of truth 
 
 Priority, size, and resolution are optional metadata unless the repository tracker contract makes them stricter. Resolution records why a terminal non-delivery issue was cancelled when the reason has a canonical value, such as `wontfix` or `duplicate`.
 
+Delivery mode is optional metadata for delivery issues. It records whether a delivery slice is expected to proceed without human interaction or requires human-in-the-loop handling:
+
+```text
+afk
+hitl
+```
+
+`afk` is preferred when objective repository gates are enough for implementation, review, and land. `hitl` requires a recorded note explaining why the issue cannot be delegated without human interaction, such as judgment calls, external access, design decisions, architecture decisions, or manual testing.
+
+Delivery mode is not a state role, assignee, queue claim, runtime actor, or permission boundary.
+
 ## Issue Sections
 
 The core defines canonical issue sections. Backend adapters decide whether those sections are comments, notes, markdown headings, fields, or another storage form.
@@ -64,7 +75,6 @@ triage-notes
 dev-brief
 dev-workpad
 review-sweep
-human-review-decision
 ```
 
 Required canonical sections for `out-of-scope` catalog issues:
@@ -79,7 +89,10 @@ Optional canonical sections:
 
 ```text
 debt-notes
+human-review-decision
 ```
+
+`human-review-decision` becomes required only when an issue uses the `human-review` state or a `hitl` delivery mode needs a post-review decision.
 
 ## Review Artifact
 

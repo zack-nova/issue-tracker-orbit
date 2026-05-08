@@ -10,10 +10,12 @@ needs-triage
   -> ready-for-dev
   -> in-progress
   -> in-review
-  -> human-review
-       -> human Decision: hold   -> human-review
-       -> human Decision: rework -> to-rework -> in-review
-       -> human Decision: merge  -> to-merge  -> land -> merged
+       -> to-rework -> in-review
+       -> to-merge  -> land -> merged
+       -> human-review
+            -> human Decision: hold   -> human-review
+            -> human Decision: rework -> to-rework -> in-review
+            -> human Decision: merge  -> to-merge  -> land -> merged
 
 any active non-terminal state
   -> blocked -> unblock -> needs-triage
@@ -31,9 +33,9 @@ Active non-terminal states are canonical states other than `blocked`, `merged`, 
 - `ready-for-dev`: A complete Dev Brief exists and development can start.
 - `in-progress`: active development work has been created or assigned.
 - `in-review`: A review artifact exists and review evidence is being collected.
-- `human-review`: Review Sweep evidence exists and a human review decision or state advancement is pending.
-- `to-rework`: A human requested changes after review, and rework should be picked up.
-- `to-merge`: A human authorized integration, and land should be picked up.
+- `human-review`: Review Sweep evidence exists and human judgment is needed before state advancement.
+- `to-rework`: Review evidence or a human decision requires changes, and rework should be picked up.
+- `to-merge`: Review evidence or a human decision authorizes integration, and Land should be picked up.
 - `merged`: The review artifact has landed.
 - `cancelled`: The issue was intentionally ended without delivery.
 
@@ -49,6 +51,21 @@ Active non-terminal states are canonical states other than `blocked`, `merged`, 
 
 Contract consumers must prevent duplicate operation pickup through their own manager or orchestrator claim state. The tracker contract must not add claim, running, retry, queue, or dispatcher ownership fields or sections.
 
+## Delivery Mode
+
+Delivery mode is optional metadata with two canonical values:
+
+```text
+afk
+hitl
+```
+
+When delivery mode is absent, contract consumers should prefer AFK handling when the issue can safely advance through objective repository gates.
+
+An issue marked `hitl` must record why it cannot be delegated without human interaction before entering `ready-for-dev`. Valid reasons include judgment calls, external access, design decisions, architecture decisions, and manual testing.
+
+An issue marked `afk` can still enter `human-review` when a contract consumer observes that safe advancement now requires human judgment.
+
 ## Gates
 
 An issue can enter `ready-for-dev` only when:
@@ -56,6 +73,8 @@ An issue can enter `ready-for-dev` only when:
 - exactly one issue type is set,
 - one Dev Brief exists,
 - the Dev Brief Type mirror exists and matches the issue type,
+- delivery mode is absent or exactly one of `afk` or `hitl`,
+- `hitl` delivery mode has a rationale explaining why the issue cannot be delegated without human interaction,
 - no unanswered triage question remains,
 - acceptance criteria are clear,
 - validation plan is clear,
@@ -95,20 +114,29 @@ An issue can enter `human-review` only when:
 
 - a Review Sweep exists,
 - the review artifact is still available,
-- the issue's current canonical state role is `in-review` or `human-review`.
+- the issue's current canonical state role is `in-review` or `human-review`,
+- the issue is marked `hitl`, or review evidence records why human judgment is now required.
 
-An issue can enter `to-rework` only after a human review decision with `Decision: rework`.
+An issue can enter `to-rework` only when one of these is true:
+
+- the issue is in `human-review` and has a valid Human Review Decision with `Decision: rework`,
+- the issue is not in `human-review`, is not marked `hitl`, and Review Sweep evidence records actionable rework that can be handled without human judgment.
 
 An issue can return from `to-rework` to `in-review` only after requested changes are applied, the review artifact is updated, and validation ran or was explicitly waived.
 
-An issue can enter `to-merge` only after a human review decision with `Decision: merge`.
+An issue can enter `to-merge` only when one of these is true:
+
+- the issue is in `human-review` and has a valid Human Review Decision with `Decision: merge`,
+- the issue is not in `human-review`, is not marked `hitl`, validation passed or was explicitly waived, Review Sweep evidence records no unresolved review artifact comments, and no human-dependent item remains.
 
 An issue can land only from `to-merge`.
 
 An issue can enter `merged` only after the review artifact lands.
 
-If Land fails from `to-merge`, return the issue to `human-review`. Move it to `to-rework` only after a human confirms the failure requires code changes.
+If Land fails from `to-merge`, return a `hitl` issue or issue with human-dependent failure evidence to `human-review`. Otherwise return it to `to-rework` when the failure is objective and can be handled AFK.
 
 ## Review Sweep Boundary
 
-Review Sweep records observations only. It may move an issue from `in-review` to `human-review`, but it must not decide `to-rework`, `to-merge`, `merged`, `cancelled`, or cancellation resolutions such as `duplicate`.
+Review Sweep records observations only. It may identify objective AFK eligibility, objective AFK rework, or the need for `human-review`, but it is not a Human Review Decision.
+
+Review Sweep must not decide `merged`, `cancelled`, or cancellation resolutions such as `duplicate`. It must not bypass `human-review` when review evidence depends on judgment calls, external access, design decisions, architecture decisions, or manual testing.

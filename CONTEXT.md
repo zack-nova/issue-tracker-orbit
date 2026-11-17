@@ -16,11 +16,21 @@ _Avoid_: Backend template
 The repository location or tracker location where a bootstrap step installs or merges a template.
 _Avoid_: Source template
 
+**Tracker Contract**:
+The contract-consumer-readable source of truth for a repository's selected issue tracker backend and runtime rule mappings.
+_Avoid_: Tracker config, workflow config
+
+**Contract Consumer**:
+An external agent, runtime participant, or tool that must read and obey the **Tracker Contract** before participating in issue workflow.
+_Avoid_: Consumer, worker, integration
+
 ## Relationships
 
 - A **Backend Template** belongs to exactly one backend.
 - An **Issue Section Template** can be used by multiple backends.
 - A **Template Target** is selected through the active tracker contract.
+- A **Contract Consumer** reads exactly one active **Tracker Contract** for a target repository before acting on managed issues.
+- A **Tracker Contract** selects exactly one backend.
 
 ## Example Dialogue
 
